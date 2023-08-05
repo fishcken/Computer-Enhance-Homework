@@ -1,5 +1,3 @@
-// Disclaimer: I have no idea if this thing is fully valid, it's probably not
-// but it mostly seems OK.
 #include <stdio.h>
 #include <inttypes.h>
 
@@ -334,7 +332,7 @@ int main(int argc, char **argv)
                 u8 index = opcode & 0b1111;
                 i8 data = (i8)getc(istream);
 
-                printf("%s %d\n", conditional_jumps[index], (int)data);
+                printf("%s $%+d\n", conditional_jumps[index], (int)data+2); // weird nasm stuff
             } break;
         case 0b11100000 ... 0b11100011:
             {
@@ -348,7 +346,7 @@ int main(int argc, char **argv)
                 u8 index = opcode & 0b11;
                 i8 data = (i8)getc(istream);
 
-                printf("%s %d\n", loops[index], (int)data);
+                printf("%s $%+d\n", loops[index], (int)data+2); // weird nasm stuff
             } break;
         default:
             printf("Instruction `0x%x` is not implemented!\n", (unsigned int)opcode);
