@@ -13,5 +13,5 @@ set WARNINGS=/W3 /WX /wd4996
 set NAME=%1
 
 pushd build
-cl %root%\%NAME%.c /nologo %WARNINGS% /Fe%NAME%.exe /MD
+clang-cl %root%\%NAME%.c /nologo %WARNINGS% /Fe%NAME%.exe /MD
 popd
