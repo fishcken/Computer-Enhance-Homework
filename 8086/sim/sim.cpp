@@ -105,14 +105,14 @@ void dump_registers(Sim8086 *sim)
             "\tcx = 0x%x\n" "\tdx = 0x%x\n"
             "\tsp = 0x%x\n" "\tbp = 0x%x\n"
             "\tsi = 0x%x\n" "\tdi = 0x%x\n"
-            "\tes = 0x%x\n" "\tss = 0x%x\n"
-            "\tds = 0x%x\n",
+            "\tes = 0x%x\n" "\tcs = 0x%x\n"
+            "\tss = 0x%x\n" "\tds = 0x%x\n",
             sim->registers[Register_A], sim->registers[Register_B],
             sim->registers[Register_C], sim->registers[Register_D],
             sim->registers[Register_SP], sim->registers[Register_BP],
             sim->registers[Register_SI], sim->registers[Register_DI],
-            sim->registers[Register_ES], sim->registers[Register_SS],
-            sim->registers[Register_DS]);
+            sim->registers[Register_ES], sim->registers[Register_CS],
+            sim->registers[Register_SS], sim->registers[Register_DS]);
 
 }
 
@@ -152,7 +152,6 @@ void run_program(Sim8086 *sim, u8 *program, size_t len)
             break;
 
         offset += ins.Size;
-
         src_val = operand_getval(sim, ins.Operands[1]);
 
         switch (ins.Operands[0].Type)
@@ -182,6 +181,12 @@ int main(int argc, char **argv)
 {
     FILE *istream = NULL;
     Sim8086 sim = {0};
+
+    if (SIM86_VERSION != Sim86_GetVersion())
+    {
+        fprintf(stderr, "version mismatch\n");
+        return 1;
+    }
 
     if (argc == 2)
     {
